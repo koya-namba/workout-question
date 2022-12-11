@@ -52,7 +52,7 @@ class User extends Authenticatable
         return $this->hasMany(Answer::class);
     }
     
-    public function answers()
+    public function favorite_answers()
     {
         return $this->belongsToMany(Answer::class, 'favorites');
     }
