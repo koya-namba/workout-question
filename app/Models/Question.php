@@ -9,6 +9,12 @@ class Question extends Model
 {
     use HasFactory;
     
+    protected $fillable = [
+        'title', 
+        'user_id',
+        'context'
+    ];
+    
     public function user()
     {
         return $this->belongsTo(User::class);
