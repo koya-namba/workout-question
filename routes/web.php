@@ -19,7 +19,9 @@ use App\Http\Controllers\QuestionController;
 //     return view('welcome');
 // });
 
-Route::get('/', [QuestionController::class, 'index'])->name('question.index');
+Route::get('/', [QuestionController::class, 'index'])->name('questions.index');
+Route::get('/questions/create', [QuestionController::class, 'create'])->name('questions.create');
+Route::post('/questions', [QuestionController::class, 'store'])->name('questions.store');
 
 
 Route::get('/dashboard', function () {
