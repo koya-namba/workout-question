@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Question;
+use App\Models\Answer;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class QuestionController extends Controller
 {
@@ -37,5 +39,16 @@ class QuestionController extends Controller
         $question->categories()->attach($input_categories);
         
         return redirect(route('questions.index'));
+    }
+    
+    public function show(Question $question)
+    {
+        $answers = Answer::where('question_id', $question->id)->get();
+        $answers->map(function ($answer) {
+            $answer->favorites = DB::table('favorites')->where('answer_id', $answer->id)->count();
+        });
+        return view('questions.show', 
+            ['question' => $question, 'answers' => $answers]
+        );
     }
 }
