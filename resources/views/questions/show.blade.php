@@ -1,11 +1,10 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Index') }}
+            {{ __('Show') }}
         </h2>
     </x-slot>
-    <a href="{{ route('questions.create') }}">質問作成</a>
-    @foreach($questions as $question)
+    <a href="{{ route('questions.index') }}">戻る</a>
     <h1>質問題名: {{ $question->title }}</h1>
     <h3>
         カテゴリー: 
@@ -18,7 +17,15 @@
     <h3>投稿日時: </h3>
     <h2>質問内容</h2>
     <p>{{ $question->context }}</p>
-    <a href="{{ route('questions.show', $question) }}">回答をみる</a>
-    <br /><br />
+    <br />
+    <h1>回答一覧</h1>
+    @foreach($answers as $answer)
+        <h3>回答者: {{ $answer->user->name }}</h3>
+        <h3>トレーニング歴: </h3>
+        <h3>投稿日時: </h3>
+        <h2>回答内容</h2>
+        <p>{{ $answer->context }}</p>
+        <a>参考になった: {{ $answer->favorites }}件</a>
+        <br />
     @endforeach
 </x-app-layout>
