@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Question;
 use App\Models\Answer;
 use App\Models\Category;
+use App\Models\Question;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
