@@ -29,4 +29,10 @@ class AnswerController extends Controller
         
         return redirect(route('questions.show', $question));
     }
+    
+    public function delete(Question $question, Answer $answer)
+    {
+        $answer->delete();
+        return redirect(route('questions.show', $question));
+    }
 }
