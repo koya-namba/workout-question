@@ -23,9 +23,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [QuestionController::class, 'index'])->name('questions.index');
 Route::get('/questions/create', [QuestionController::class, 'create'])->name('questions.create');
 Route::post('/questions', [QuestionController::class, 'store'])->name('questions.store');
-Route::get('/questions/{question}/', [QuestionController::class, 'show'])->name('questions.show');
+Route::get('/questions/{question}', [QuestionController::class, 'show'])->name('questions.show');
+Route::delete('/questions/{question}', [QuestionController::class, 'delete'])->name('questions.delete');
 Route::get('/questions/{question}/answers/create', [AnswerController::class, 'create'])->name('answers.create');
 Route::post('/questions/{question}/answers', [AnswerController::class, 'store'])->name('answers.store');
+Route::delete('/questions/{question}/answers/{answer}', [AnswerController::class, 'delete'])->name('answers.delete');
 
 
 Route::get('/dashboard', function () {

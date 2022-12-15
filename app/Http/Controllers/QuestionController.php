@@ -51,4 +51,10 @@ class QuestionController extends Controller
             ['question' => $question, 'answers' => $answers]
         );
     }
+    
+    public function delete(Question $question)
+    {
+        $question->delete();
+        return redirect(route('questions.index'));
+    }
 }
