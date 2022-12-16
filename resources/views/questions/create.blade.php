@@ -9,10 +9,16 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     <form action="{{ route('questions.store') }}" method="POST">
+                        <!--質問回答フォーム-->
                         @csrf
                         <div class="mt-2">
                             <h1>質問タイトル</h1>
                             <textarea name="question[title]"></textarea>
+                            @error('question.title')
+                                <div class="text-red-500 text-sm mt-2">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
                         <div class="mt-2">
                             <h3>カテゴリー</h3>
@@ -29,7 +35,12 @@
                             <h3>質問内容</h3>
                         </div>
                         <div class="mt-2">
-                            <textarea name="question[context]"></textarea><br />
+                            <textarea name="question[context]"></textarea>
+                            @error('question.context')
+                                <div class="text-red-500 text-sm mt-2">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
                         <div class="mt-4 flex">
                             <button type="submit" class="bg-blue-500 rounded font-medium px-4 py-2 text-white">
