@@ -22,16 +22,21 @@ use Illuminate\Support\Facades\Route;
 
 // 質問関連
 Route::get('/', [QuestionController::class, 'index'])->name('questions.index');
-Route::get('/questions/create', [QuestionController::class, 'create'])->name('questions.create');
-Route::post('/questions', [QuestionController::class, 'store'])->name('questions.store');
+Route::get('/questions/create', [QuestionController::class, 'create'])->name('questions.create')->middleware('auth');
 Route::get('/questions/{question}', [QuestionController::class, 'show'])->name('questions.show');
-Route::delete('/questions/{question}', [QuestionController::class, 'delete'])->name('questions.delete');
+Route::middleware('auth')->group(function() {
+    Route::post('/questions', [QuestionController::class, 'store'])->name('questions.store');
+    Route::delete('/questions/{question}', [QuestionController::class, 'delete'])->name('questions.delete');
+});
+
 // 回答関連
-Route::get('/questions/{question}/answers/create', [AnswerController::class, 'create'])->name('answers.create');
-Route::post('/questions/{question}/answers', [AnswerController::class, 'store'])->name('answers.store');
-Route::delete('/questions/{question}/answers/{answer}', [AnswerController::class, 'delete'])->name('answers.delete');
-Route::post('/questions/{question}/answers/{answer}/like', [AnswerController::class, 'like'])->name('answers.like');
-Route::post('/questions/{question}/answers/{answer}/unlike', [AnswerController::class, 'unlike'])->name('answers.unlike');
+Route::middleware('auth')->group(function() {
+    Route::get('/questions/{question}/answers/create', [AnswerController::class, 'create'])->name('answers.create');
+    Route::post('/questions/{question}/answers', [AnswerController::class, 'store'])->name('answers.store');
+    Route::delete('/questions/{question}/answers/{answer}', [AnswerController::class, 'delete'])->name('answers.delete');
+    Route::post('/questions/{question}/answers/{answer}/like', [AnswerController::class, 'like'])->name('answers.like');
+    Route::post('/questions/{question}/answers/{answer}/unlike', [AnswerController::class, 'unlike'])->name('answers.unlike');    
+});
 
 // larave純正
 Route::get('/dashboard', function () {

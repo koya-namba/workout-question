@@ -57,10 +57,18 @@ class QuestionController extends Controller
         return view('questions.show', ['question' => $question, 'answers' => $answers]);
     }
     
-    public function delete(Question $question)
+    public function delete(Request $request, Question $question)
     {
         // 質問削除
-        $question->delete();
-        return redirect(route('questions.index'));
+        if($request->user()->id == $question->user_id){
+            $question->delete();
+            $status = 'true';
+            $message = '削除に成功しました';
+        }else{
+            $status = 'false';
+            $message = '削除に失敗しました';
+        }
+        
+        return redirect(route('questions.index'))->with(['status'=>$status, 'message'=>$message]);
     }
 }

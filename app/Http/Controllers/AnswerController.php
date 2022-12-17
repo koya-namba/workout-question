@@ -36,22 +36,36 @@ class AnswerController extends Controller
         return redirect(route('questions.show', $question));
     }
     
-    public function delete(Question $question, Answer $answer)
+    public function delete(Request $request, Question $question, Answer $answer)
     {
         // 回答削除
-        $answer->delete();
-        return redirect(route('questions.show', $question));
+        if($request->user()->id == $answer->user_id){
+            $answer->delete();
+            $status = 'true';
+            $message = '削除に成功しました';
+        }else{
+            $status = 'false';
+            $message = '削除に失敗しました';
+        }
+        
+        return redirect(route('questions.show', $question))->with(['status'=>$status, 'message'=>$message]);
     }
     
     public function like(Question $question, Answer $answer)
     {
-        $answer->users()->attach(Auth::id());
+        if (!($answer->users()->where('user_id', Auth::id())->exists())){
+            $answer->users()->attach(Auth::id());
+        }
+        
         return redirect(route('questions.show', $question));
     }
     
     public function unlike(Question $question, Answer $answer)
     {
-        $answer->users()->detach(Auth::id());
+        if ($answer->users()->where('user_id', Auth::id())->exists()){
+            $answer->users()->detach(Auth::id());
+        }
+        
         return redirect(route('questions.show', $question));
     }
 }
