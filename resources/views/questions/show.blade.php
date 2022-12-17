@@ -93,11 +93,39 @@
                                         </div>
                                     </form>
                                 </div>
-                                <div class="p-2">
-                                    <a class="bg-blue-500 rounded font-medium px-4 py-2 text-white">
-                                        参考になった: {{ $answer->favorites }}件
-                                    </a>
-                                </div>
+                                @auth
+                                    <div class="p-1 ml-2">
+                                        @if($answer->users()->where('user_id', Auth::id())->exists())
+                                            <form action="{{ route('answers.unlike', [$question, $answer]) }}" method="POST">
+                                                <!--お気に入りフォーム-->
+                                                @csrf
+                                                <button type="submit" class="bg-blue-500 rounded font-medium px-4 py-2 text-white">
+                                                    参考になったを取り消す
+                                                </button>
+                                            </form>
+                                        @else
+                                            <form action="{{ route('answers.like', [$question, $answer]) }}" method="POST">
+                                                <!--お気に入りフォーム-->
+                                                @csrf
+                                                <button type="submit" class="bg-blue-500 rounded font-medium px-4 py-2 text-white">
+                                                    参考になった
+                                                </button>
+                                            </form>
+                                        @endif
+                                    </div>
+                                @endauth
+                                @guest
+                                    <div class="p-2">
+                                        <a  href="{{ route('login') }}" class="bg-blue-500 rounded font-medium px-4 py-2 text-white">
+                                            ログインして参考になったを押す
+                                        </a>
+                                    </div>
+                                @endguest
+                            </div>
+                            <div class="mt-2">
+                                <p>
+                                    参考になった: {{ $answer->favorites }}件
+                                </p>
                             </div>
                         </div>
                     </div>

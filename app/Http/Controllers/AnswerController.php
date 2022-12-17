@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Answer;
 use App\Models\Category;
 use App\Models\Question;
+use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -39,6 +40,18 @@ class AnswerController extends Controller
     {
         // 回答削除
         $answer->delete();
+        return redirect(route('questions.show', $question));
+    }
+    
+    public function like(Question $question, Answer $answer)
+    {
+        $answer->users()->attach(Auth::id());
+        return redirect(route('questions.show', $question));
+    }
+    
+    public function unlike(Question $question, Answer $answer)
+    {
+        $answer->users()->detach(Auth::id());
         return redirect(route('questions.show', $question));
     }
 }
