@@ -30,7 +30,8 @@ Route::delete('/questions/{question}', [QuestionController::class, 'delete'])->n
 Route::get('/questions/{question}/answers/create', [AnswerController::class, 'create'])->name('answers.create');
 Route::post('/questions/{question}/answers', [AnswerController::class, 'store'])->name('answers.store');
 Route::delete('/questions/{question}/answers/{answer}', [AnswerController::class, 'delete'])->name('answers.delete');
-
+Route::post('/questions/{question}/answers/{answer}/like', [AnswerController::class, 'like'])->name('answers.like');
+Route::post('/questions/{question}/answers/{answer}/unlike', [AnswerController::class, 'unlike'])->name('answers.unlike');
 
 // larave純正
 Route::get('/dashboard', function () {
