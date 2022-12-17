@@ -6,6 +6,15 @@
     </x-slot>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            @if (session('status') == 'true')
+                <div class="mb-8 bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4" role="alert">
+                    <p>{{ session('message') }}</p>
+                </div>
+            @elseif (session('status') == 'false')
+                <div class="mb-8 bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4" role="alert">
+                    <p class="font-bold">{{ session('message') }}</p>
+                </div>
+            @endif
             <a href="{{ route('questions.index') }}" class="bg-blue-500 rounded font-medium px-4 py-2 text-white">
                 戻る
             </a>
@@ -39,17 +48,21 @@
                         <div class="mt-1">
                             <p>{{ $question->context }}</p>
                         </div>
-                        <div>
-                            <form action="{{ route('questions.delete', $question) }}" method="POST" id="form_question_{{ $question->id }}">
-                                @csrf
-                                @method('DELETE')
-                                <div class="mt-4">
-                                    <button onclick="deleteQuestion({{ $question->id }})" class="bg-blue-500 rounded font-medium px-4 py-2 text-white">
-                                        質問を削除する
-                                    </button>
+                        @auth
+                            @if($question->user_id === Auth::id())
+                                <div>
+                                    <form action="{{ route('questions.delete', $question) }}" method="POST" id="form_question_{{ $question->id }}">
+                                        @csrf
+                                        @method('DELETE')
+                                        <div class="mt-4">
+                                            <button onclick="deleteQuestion({{ $question->id }})" class="bg-blue-500 rounded font-medium px-4 py-2 text-white">
+                                                質問を削除する
+                                            </button>
+                                        </div>
+                                    </form>
                                 </div>
-                            </form>
-                        </div>
+                            @endif
+                        @endauth
                     </div>
                 </div>
             </div>
@@ -82,18 +95,20 @@
                                 <p>{{ $answer->context }}</p>
                             </div>
                             <div class="mt-4 flex">
-                                <div>
-                                    <form action="{{ route('answers.delete', [$question, $answer]) }}" method="POST" id="form_answer_{{ $answer->id }}">
-                                        @csrf
-                                        @method('DELETE')
-                                        <div>
-                                            <button onclick="deleteAnswer({{ $answer->id }})" class="bg-blue-500 rounded font-medium px-4 py-2 text-white">
-                                                回答を削除する
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
                                 @auth
+                                    @if($answer->user_id === Auth::id())
+                                    <div>
+                                        <form action="{{ route('answers.delete', [$question, $answer]) }}" method="POST" id="form_answer_{{ $answer->id }}">
+                                            @csrf
+                                            @method('DELETE')
+                                            <div>
+                                                <button onclick="deleteAnswer({{ $answer->id }})" class="bg-blue-500 rounded font-medium px-4 py-2 text-white">
+                                                    回答を削除する
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    @endif
                                     <div class="p-1 ml-2">
                                         @if($answer->users()->where('user_id', Auth::id())->exists())
                                             <form action="{{ route('answers.unlike', [$question, $answer]) }}" method="POST">

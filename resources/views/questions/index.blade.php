@@ -6,6 +6,15 @@
     </x-slot>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            @if (session('status') == 'true')
+                <div class="mb-8 bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4" role="alert">
+                    <p class="font-bold">{{ session('message') }}</p>
+                </div>
+            @elseif (session('status') == 'false')
+                <div class="mb-8 bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4" role="alert">
+                    <p class="font-bold">{{ session('message') }}</p>
+                </div>
+            @endif
             <a href="{{ route('questions.create') }}" class="bg-blue-500 rounded font-medium px-4 py-2 text-white">
                 質問作成
             </a>
