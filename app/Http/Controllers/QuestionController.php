@@ -10,10 +10,18 @@ use Illuminate\Support\Facades\DB;
 
 class QuestionController extends Controller
 {
-    public function index(Question $question)
+    public function index(Request $request, Question $question, Category $category)
     {
         // 質問一覧
-        return view('questions.index', ['questions' => $question->get()]);
+        $category_id = 0;
+        
+        if (isset($request->category_id)) {
+            $category_id = $request->category_id;
+            $question = $question->whereHas('categories', function($q) use($category_id) {
+                $q->where('category_question.category_id', $category_id);
+            });
+        }
+        return view('questions.index', ['questions' => $question->get(), 'categories' => $category->get(), 'category_id' => $category_id]);
     }
     
     public function create(Category $category)

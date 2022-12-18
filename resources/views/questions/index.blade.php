@@ -19,6 +19,19 @@
                 質問作成
             </a>
             <div class="mt-6">
+                <select name="category" onChange="location.href=value;">
+                    <option value="{{ route('questions.index') }}" @if ($category_id == 0) selected @endif>
+                        全て
+                    </option>
+                    @foreach($categories as $category)
+                        <option value="{{ route('questions.index', ['category_id' => $category->id]) }}" @if ($category_id == $category->id) selected @endif>
+                            {{ $category->category_name }}
+                            
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="mt-6">
                 <!--質問一覧を表示-->
                 @foreach($questions as $question)
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
