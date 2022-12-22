@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Answer;
 use App\Models\Category;
 use App\Models\Question;
+use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -78,5 +79,11 @@ class QuestionController extends Controller
         }
         
         return redirect(route('questions.index'))->with(['status'=>$status, 'message'=>$message]);
+    }
+    
+    public function myquestions(Question $question)
+    {
+        $myquestions = $question->where('user_id', Auth::id());
+        return view('questions.myquestions', ['questions' => $myquestions->get()]);
     }
 }

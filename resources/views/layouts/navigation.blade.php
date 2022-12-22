@@ -12,8 +12,11 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                    <x-nav-link :href="route('questions.index')" :active="request()->routeIs('questions.index')">
+                        {{ __('Question index') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('questions.myquestions')" :active="request()->routeIs('questions.myquestions')">
+                        {{ __('My Questions') }}
                     </x-nav-link>
                 </div>
             </div>
