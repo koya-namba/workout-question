@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Route;
 // 質問関連
 Route::get('/', [QuestionController::class, 'index'])->name('questions.index');
 Route::get('/questions/create', [QuestionController::class, 'create'])->name('questions.create')->middleware('auth');
+Route::get('questions/myquestions', [QuestionController::class, 'myquestions'])->name('questions.myquestions')->middleware('auth');
 Route::get('/questions/{question}', [QuestionController::class, 'show'])->name('questions.show');
 Route::middleware('auth')->group(function() {
     Route::post('/questions', [QuestionController::class, 'store'])->name('questions.store');
