@@ -6,6 +6,7 @@
     </x-slot>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <!--登録可否のコメント-->
             @if (session('status') == 'true')
                 <div class="mb-8 bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4" role="alert">
                     <p>{{ session('message') }}</p>
@@ -15,13 +16,14 @@
                     <p class="font-bold">{{ session('message') }}</p>
                 </div>
             @endif
+            <!--戻るボタン-->
             <a href="{{ route('questions.index') }}" class="bg-blue-500 rounded font-medium px-4 py-2 text-white">
                 戻る
             </a>
+            <!--質問詳細を表示-->
             <div class="mt-6">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 bg-white border-b border-gray-200">
-                        <!--質問詳細を表示-->
                         <div class="mt-2">
                             <h1>質問タイトル: {{ $question->title }}</h1>
                         </div>
@@ -48,6 +50,7 @@
                         <div class="mt-1">
                             <p>{{ $question->context }}</p>
                         </div>
+                        <!--削除ボタンの表示-->
                         @auth
                             @if($question->user_id === Auth::id())
                                 <div>
@@ -69,13 +72,14 @@
             <div class="mt-8">
                 <h1>回答一覧</h1>
             </div>
+            <!--回答作成ボタン-->
             <div class="mt-6">
                 <a href="{{ route('answers.create', $question) }}" class="bg-blue-500 rounded font-medium px-4 py-2 text-white">
                     質問に回答
                 </a>
             </div>
+            <!--回答一覧を表示-->
             <div class="mt-6">
-                <!--回答一覧を表示-->
                 @foreach($answers as $answer)
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div class="p-6 bg-white border-b border-gray-200">
@@ -96,6 +100,7 @@
                             </div>
                             <div class="mt-4 flex">
                                 @auth
+                                    <!--削除ボタンの表示-->
                                     @if($answer->user_id === Auth::id())
                                     <div>
                                         <form action="{{ route('answers.delete', [$question, $answer]) }}" method="POST" id="form_answer_{{ $answer->id }}">
@@ -110,6 +115,7 @@
                                     </div>
                                     @endif
                                     <div class="p-1 ml-2">
+                                        <!--お気に入り機能-->
                                         @if($answer->users()->where('user_id', Auth::id())->exists())
                                             <form action="{{ route('answers.unlike', [$question, $answer]) }}" method="POST">
                                                 <!--お気に入りフォーム-->

@@ -6,6 +6,7 @@
     </x-slot>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <!--登録可否のコメント-->
             @if (session('status') == 'true')
                 <div class="mb-8 bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4" role="alert">
                     <p class="font-bold">{{ session('message') }}</p>
@@ -15,9 +16,11 @@
                     <p class="font-bold">{{ session('message') }}</p>
                 </div>
             @endif
+            <!--質問作成ボタン-->
             <a href="{{ route('questions.create') }}" class="bg-blue-500 rounded font-medium px-4 py-2 text-white">
                 質問作成
             </a>
+            <!--カテゴリー選択-->
             <div class="mt-6">
                 <select name="category" onChange="location.href=value;">
                     <option value="{{ route('questions.index') }}" @if ($category_id == 0) selected @endif>
@@ -31,8 +34,8 @@
                     @endforeach
                 </select>
             </div>
+            <!--質問一覧を表示-->
             <div class="mt-6">
-                <!--質問一覧を表示-->
                 @foreach($questions as $question)
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div class="p-6 bg-white border-b border-gray-200">
