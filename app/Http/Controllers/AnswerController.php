@@ -53,6 +53,8 @@ class AnswerController extends Controller
     
     public function like(Question $question, Answer $answer)
     {
+        // お気に入り登録
+        // favoritesテーブルにデータがないことを確認
         if (!($answer->users()->where('user_id', Auth::id())->exists())){
             $answer->users()->attach(Auth::id());
         }
@@ -62,6 +64,8 @@ class AnswerController extends Controller
     
     public function unlike(Question $question, Answer $answer)
     {
+        // お気に入り登録削除
+        // favoritesテーブルにデータがあることを確認
         if ($answer->users()->where('user_id', Auth::id())->exists()){
             $answer->users()->detach(Auth::id());
         }

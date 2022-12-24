@@ -40,8 +40,8 @@
             <div class="mt-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 bg-white border-b border-gray-200">
+                        <!--回答作成フォーム-->
                         <form action="{{ route('answers.store', $question) }}" method="POST">
-                            <!--回答作成フォーム-->
                             @csrf
                             <div class="mt-2">
                                 <h3>回答者:{{ Auth::user()->name }}</h3>
