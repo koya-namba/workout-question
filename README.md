@@ -1,5 +1,4 @@
 # 筋トレ質問アプリ
-
 筋トレに関する質問ができるアプリケーション．  
 
 # DEMO
@@ -10,34 +9,31 @@ email : demo@mail.com
 PW : asdfasdf
 
 # Features
-
 以下にwebアプリの画面を一部紹介する．
 
-投稿一覧画面.  
-
-
-投稿作成画面.  
-
-
-カテゴリーごとの投稿一覧画面.  
-
-
 # Future Features
-- [ ] ユーザごとの投稿ページ
-- [ ] いいね機能
-- [ ] Twitter連携
+- [x] 認証機能
+- [x] seederの作成
+- [x] リレーション
+- [x] 質問一覧機能
+- [x] 質問作成機能
+- [x] 質問詳細(回答一覧)機能
+- [x] 質問削除機能
+- [x] お気に入り機能
+- [x] カテゴリー機能
+- [x] 自分の質問一覧機能
 
 # Requirement
-* "php": "^7.2.5|^8.0"
-* "fideloper/proxy": "^4.4"
-* "laravel/framework": "^6.20.26"
-* "laravel/tinker": "^2.5"
-* "league/flysystem-aws-s3-v3": "~1.0"
+* "php": "^8.0.2"
+* "guzzlehttp/guzzle": "^7.2"
+* "laravel/framework": "^9.19"
+* "laravel/sanctum": "^3.0"
+* "laravel/tinker": "^2.7"
 
 # Installation
 インストールと初期設定
 ```bash
-git clone
+git clone https://github.com/koya-namba/workout-question.git
 cd workout-question
 composer install
 npm install
