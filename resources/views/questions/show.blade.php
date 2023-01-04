@@ -42,7 +42,7 @@
                             <h3>トレーニング歴: </h3>
                         </div>
                         <div class="mt-2">
-                            <h3>投稿日時: </h3>
+                            <h3>投稿日時: {{ $question->created_at }}</h3>
                         </div>
                         <div class="mt-2">
                             <h2>質問内容</h2>
@@ -90,7 +90,7 @@
                                 <h3>トレーニング歴: </h3>
                             </div>
                             <div class="mt-2">
-                                <h3>投稿日時: </h3>
+                                <h3>回答日時: {{ $answer->created_at }}</h3>
                             </div>
                             <div class="mt-2">
                                 <h2>回答内容</h2>
