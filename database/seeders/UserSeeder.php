@@ -25,6 +25,7 @@ class UserSeeder extends Seeder
             'name' => 'test',
             'email' => 'test@mail.com',
             'password' => bcrypt('asdfasdf'),
+            'training_start_month' => 202010,
         ]);
     }
 }
