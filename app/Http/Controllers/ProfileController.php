@@ -15,6 +15,23 @@ class ProfileController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\View\View
      */
+    
+    public function edit_start_month(Request $request)
+    {
+        return view('profile.edit_start_month', ['user_name' => $request->user()->name]);
+    }
+    
+    public function update_start_month(Request $request)
+    {
+        $start_month = (int)date('Ym', strtotime($request['profile']['start_month']));
+        $auth_user = $request->user();
+        $auth_user['training_start_month'] = $start_month;
+        $auth_user->save();
+        $status = 'true';
+        $message = '登録に成功しました';
+        return redirect(route('questions.index'))->with(['status'=>$status, 'message'=>$message]);
+    }
+    
     public function edit(Request $request)
     {
         return view('profile.edit', [

@@ -39,11 +39,13 @@ Route::middleware('auth')->group(function() {
     Route::post('/questions/{question}/answers/{answer}/unlike', [AnswerController::class, 'unlike'])->name('answers.unlike');    
 });
 
-// larave純正
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// 筋トレ開始日
+Route::middleware('auth')->group(function() {
+    Route::get('/start_month', [ProfileController::class, 'edit_start_month'])->name('start_month.edit');
+    Route::put('/start_month', [ProfileController::class, 'update_start_month'])->name('start_month.update');
+});
 
+// larave純正
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

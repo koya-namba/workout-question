@@ -31,6 +31,10 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
+        
+        if(!($request->user()->training_start_month)) {
+            return redirect(route('start_month.edit'));
+        }
 
         return redirect()->intended(RouteServiceProvider::HOME);
     }
