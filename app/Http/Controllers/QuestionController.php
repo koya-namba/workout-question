@@ -16,27 +16,17 @@ class QuestionController extends Controller
         // 質問一覧
         // カテゴリー選択のための変数
         $category_id = 0;
-        // カテゴリーが選択されている場合には，カテゴリーで質問一覧を取得．
+        // カテゴリーが選択されている場合には，カテゴリーで質問一覧を取得
         if (isset($request->category_id)) {
             $category_id = $request->category_id;
-            $question = $question->whereHas('categories', function($q) use($category_id) {
+            $question_collection = $question->whereHas('categories', function($q) use($category_id) {
                 $q->where('category_question.category_id', $category_id);
-            });
+            })->get();
+        } else {
+            $question_collection = $question->get();
         }
-        $questions = $question->get()->map(function ($q) {
-            $now_year = (int)substr((int)date('Ym'), 0, 4);
-            $now_month = (int)substr((int)date('Ym'), 4);
-            $start_year = (int)substr($q->user->training_start_month, 0, 4);
-            $start_month = (int)substr($q->user->training_start_month, 4);
-            if ($start_year == null) {
-                $q['training_period'] = '秘密';
-            } elseif ($now_year > $start_year && $now_month > $start_month) {
-                $q['training_period'] = $now_year - $start_year . '年' . $now_month - $start_month . 'カ月';
-            } elseif ($now_year > $start_year && $now_month < $start_month) {
-                $q['training_period'] = ($now_year-1) - $start_year . '年' . ($now_month+12) - $start_month . 'カ月';
-            }
-            return $q;
-        });
+        $questions = $question->multi_training_period($question_collection);
+        
         return view('questions.index', ['questions' => $questions, 'categories' => $category->get(), 'category_id' => $category_id]);
     }
     
@@ -70,35 +60,15 @@ class QuestionController extends Controller
     
     public function show(Question $question)
     {
-        
-        $now_year = (int)substr((int)date('Ym'), 0, 4);
-        $now_month = (int)substr((int)date('Ym'), 4);
-        $start_year = (int)substr($question->user->training_start_month, 0, 4);
-        $start_month = (int)substr($question->user->training_start_month, 4);
-        if ($start_year == null) {
-            $question['training_period'] = '秘密';
-        } elseif ($now_year > $start_year && $now_month > $start_month) {
-            $question['training_period'] = $now_year - $start_year . '年' . $now_month - $start_month . 'カ月';
-        } elseif ($now_year > $start_year && $now_month < $start_month) {
-            $question['training_period'] = ($now_year-1) - $start_year . '年' . ($now_month+12) - $start_month . 'カ月';
-        }
         // 質問詳細ー回答一覧
+        // トレーニング期間を計算し，取得
+        $question = $question->training_period($question);
         // 質問に関連する回答を取得
         $answers = Answer::where('question_id', $question->id)->get();
-        // 回答のお気に入り数を取得
+        // 回答のお気に入り数とトレーニング期間を計算し，取得
         $answers = $answers->map(function ($answer) {
             $answer->favorites = DB::table('favorites')->where('answer_id', $answer->id)->count();
-            $now_year = (int)substr((int)date('Ym'), 0, 4);
-            $now_month = (int)substr((int)date('Ym'), 4);
-            $start_year = (int)substr($answer->user->training_start_month, 0, 4);
-            $start_month = (int)substr($answer->user->training_start_month, 4);
-            if ($start_year == null) {
-                $answer['training_period'] = '秘密';
-            } elseif ($now_year > $start_year && $now_month > $start_month) {
-                $answer['training_period'] = $now_year - $start_year . '年' . $now_month - $start_month . 'カ月';
-            } elseif ($now_year > $start_year && $now_month < $start_month) {
-                $answer['training_period'] = ($now_year-1) - $start_year . '年' . ($now_month+12) - $start_month . 'カ月';
-            }
+            $answer = $answer->training_period($answer);
             return $answer;
         });
         
@@ -123,21 +93,9 @@ class QuestionController extends Controller
     public function myquestions(Question $question)
     {
         // 自分の質問一覧
-        $myquestions = $question->where('user_id', Auth::id());
-        $myquestions = $myquestions->get()->map(function ($q) {
-            $now_year = (int)substr((int)date('Ym'), 0, 4);
-            $now_month = (int)substr((int)date('Ym'), 4);
-            $start_year = (int)substr($q->user->training_start_month, 0, 4);
-            $start_month = (int)substr($q->user->training_start_month, 4);
-            if ($start_year == null) {
-                $q['training_period'] = '秘密';
-            } elseif ($now_year > $start_year && $now_month > $start_month) {
-                $q['training_period'] = $now_year - $start_year . '年' . $now_month - $start_month . 'カ月';
-            } elseif ($now_year > $start_year && $now_month < $start_month) {
-                $q['training_period'] = ($now_year-1) - $start_year . '年' . ($now_month+12) - $start_month . 'カ月';
-            }
-            return $q;
-        });
+        // トレーニング期間を計算し，取得
+        $myquestion_collection = $question->where('user_id', Auth::id())->get();
+        $myquestions = $question->multi_training_period($myquestion_collection);
         
         return view('questions.myquestions', ['questions' => $myquestions]);
     }
