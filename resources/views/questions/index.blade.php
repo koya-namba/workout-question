@@ -54,7 +54,7 @@
                                 <h3>質問者: {{ $question->user->name }}</h3>
                             </div>
                             <div class="mt-2">
-                                <h3>トレーニング歴: </h3>
+                                <h3>トレーニング歴: {{ $question->training_period }}</h3>
                             </div>
                             <div class="mt-2">
                                 <h3>投稿日時:{{ $question->created_at }} </h3>
