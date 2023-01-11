@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Training Start Day') }}
+            {{ __('トレーニング開始月設定') }}
         </h2>
     </x-slot>
 
@@ -14,7 +14,7 @@
                         @csrf
                         @method('PUT')
                         <div class="mt-2">
-                            <h1>{{ $user_name }}さん，筋トレをいつから始めましたか?</h1>
+                            <h1 class="mb-4">{{ $user_name }}さん，筋トレをいつから始めましたか?</h1>
                             <input type="month" name="profile[start_month]">
                             @error('profile.start_month')
                                 <div class="text-red-500 text-sm mt-2">
@@ -23,7 +23,7 @@
                             @enderror
                         </div>
                         <div class="mt-4">
-                            <button type="submit" class="bg-blue-500 rounded font-medium px-4 py-2 text-white">
+                            <button type="submit" class="bg-transparent hover:bg-gray-100 text-gray-800 font-semibold hover:text-gray-800 py-2 px-4 rounded">
                                 登録する
                             </button>
                         </div>
